@@ -1,0 +1,212 @@
+/*
+ * obstacle_avoidance.cpp
+ *
+ *  Created on: Nov 12, 2017
+ *      Author: Jigar
+ */
+
+#include "obstacle_avoidance.h"
+#include "_can_dbc/generated_can.h"
+
+range_type get_left_state(uint16_t left_rdg)
+{
+	dir_range range = {0};
+	if(left_rdg>=0 && left_rdg <=20)
+		range.left_range = too_near;
+	else if(left_rdg>20 && left_rdg<=45)
+		range.left_range = near;
+	else if(left_rdg>45 && left_rdg<=110)
+		range.left_range = far;
+	else if(left_rdg > 110)
+		range.left_range = too_far;
+
+	return range.left_range;
+}
+
+range_type get_right_state(uint16_t center_rdg)
+{
+	dir_range range = {0};
+
+	if(center_rdg>=0 && center_rdg <=20)
+		range.right_range = too_near;
+	else if(center_rdg>20 && center_rdg<=45)
+		range.right_range = near;
+	else if(center_rdg>45 && center_rdg<=110)
+		range.right_range = far;
+	else if(center_rdg > 110)
+		range.right_range = too_far;
+
+	return range.right_range;
+}
+
+range_type get_center_state(uint16_t center_rdg)
+{
+	dir_range range = {0};
+
+	if(center_rdg>=0 && center_rdg <=40)
+		range.center_range = too_near;
+	else if(center_rdg>40 && center_rdg<=80)
+		range.center_range = near;
+	else if(center_rdg>80 && center_rdg<=180)
+		range.center_range = far;
+	else if(center_rdg > 180)
+		range.center_range = too_far;
+
+	return range.center_range;
+}
+
+range_type get_rear_state(uint16_t rear_rdg)
+{
+	dir_range range = {0};
+	if(rear_rdg>=0 && rear_rdg <=40)
+		range.rear_range = too_near;
+	else if(rear_rdg>40 && rear_rdg<=80)
+		range.rear_range = near;
+	else if(rear_rdg>80 && rear_rdg<=180)
+		range.rear_range = far;
+	else if(rear_rdg > 180)
+		range.rear_range = too_far;
+
+	return range.rear_range;
+}
+
+void* obstacle_avoidance(range_type left, range_type center, range_type right, range_type rear)
+{
+	static MOTOR_SIGNAL_t obst_avoided_msg= {0};
+
+	static int setbitifObstacleFar;
+	static int setbitifObstacleNear;
+
+	if(center == too_near)
+	{
+		//Stop
+		//Set this bit if middle range = 3.
+		setbitifObstacleFar = 0;
+		//Set this bit if middle range = 2.
+		setbitifObstacleNear = 0;
+
+		obst_avoided_msg.MOTOR_STEER_STRAIGHT = 1;
+		obst_avoided_msg.MOTOR_DRIVE_SPEED = 0;
+	}
+	else if(center == near)
+	{
+		if(setbitifObstacleFar == 1)
+		{
+			obst_avoided_msg.MOTOR_DRIVE_SPEED = 0;
+			setbitifObstacleFar = 0;
+		}
+		else if(setbitifObstacleNear == 1)
+		{
+			obst_avoided_msg.MOTOR_DRIVE_SPEED = 5;
+			setbitifObstacleNear = 0;
+		}
+		else
+		{
+			obst_avoided_msg.MOTOR_DRIVE_SPEED = 5;
+
+			if(left == near || left == too_near)
+			{
+				obst_avoided_msg.MOTOR_STEER_FULL_RIGHT = 1;
+			}
+			else if(right == near || right == too_near)
+			{
+				obst_avoided_msg.MOTOR_STEER_FULL_LEFT = 1;
+			}
+			else
+			{
+				obst_avoided_msg.MOTOR_STEER_STRAIGHT = 1;
+			}
+		}
+	}
+
+	else if(center == far)
+	{
+			if(setbitifObstacleFar == 1)
+			{
+				obst_avoided_msg.MOTOR_DRIVE_SPEED = 5;
+				setbitifObstacleFar = 0;
+			}
+			else
+			{
+				if(left == too_near && right == too_near)
+				{
+					obst_avoided_msg.MOTOR_STEER_STRAIGHT = 1;
+					obst_avoided_msg.MOTOR_DRIVE_SPEED = 0;
+				}
+				else if(left == near && right == near)
+				{
+					obst_avoided_msg.MOTOR_STEER_STRAIGHT = 1;
+					obst_avoided_msg.MOTOR_DRIVE_SPEED = 5;
+				}
+				else if((left == near && right == too_near) || (left == too_near && right == near))
+				{
+					obst_avoided_msg.MOTOR_STEER_STRAIGHT = 1;
+					obst_avoided_msg.MOTOR_DRIVE_SPEED = 0;
+				}
+				else if(left == near || left == too_near)
+				{
+					obst_avoided_msg.MOTOR_STEER_SLIGHT_RIGHT = 1;
+					obst_avoided_msg.MOTOR_DRIVE_SPEED = 5;
+
+				}
+				else if(right == near || right == too_near)
+				{
+					obst_avoided_msg.MOTOR_STEER_SLIGHT_LEFT = 1;
+					obst_avoided_msg.MOTOR_DRIVE_SPEED = 5;
+
+				}
+				else
+				{
+					obst_avoided_msg.MOTOR_DRIVE_SPEED = 15;
+					obst_avoided_msg.MOTOR_STEER_STRAIGHT = 1;
+				}
+			}
+			setbitifObstacleNear = 1;
+		}
+		else if(center == too_far)
+		{
+		    if(left == too_near && right == too_near)
+		    {
+	    		    obst_avoided_msg.MOTOR_STEER_STRAIGHT = 1;
+			    obst_avoided_msg.MOTOR_DRIVE_SPEED = 0;
+		    }
+		    else if(left == near && right == near)
+		    {
+			    obst_avoided_msg.MOTOR_STEER_STRAIGHT = 1;
+			    obst_avoided_msg.MOTOR_DRIVE_SPEED = 5;
+		    }
+			else if((left == near && right == too_near) || (left == too_near && right == near))
+			{
+				obst_avoided_msg.MOTOR_STEER_STRAIGHT = 1;
+				obst_avoided_msg.MOTOR_DRIVE_SPEED = 0;
+			}
+		    else if(left == too_near)
+		    {
+			    obst_avoided_msg.MOTOR_STEER_FULL_RIGHT = 1;
+			    obst_avoided_msg.MOTOR_DRIVE_SPEED = 5;
+		    }
+		    else if(right == too_near)
+		    {
+			    obst_avoided_msg.MOTOR_STEER_FULL_LEFT = 1;
+			    obst_avoided_msg.MOTOR_DRIVE_SPEED = 5;
+		    }
+		    else if(right == near)
+		    {
+			    obst_avoided_msg.MOTOR_STEER_SLIGHT_LEFT = 1;
+			    obst_avoided_msg.MOTOR_DRIVE_SPEED = 5;//later make 15
+		    }
+		    else if(left == near)
+		    {
+			    obst_avoided_msg.MOTOR_STEER_SLIGHT_RIGHT = 1;
+			    obst_avoided_msg.MOTOR_DRIVE_SPEED = 5;//later make 15
+		    }
+		    else
+		    {
+			    obst_avoided_msg.MOTOR_DRIVE_SPEED = 15;  // make 25 on testing
+			    obst_avoided_msg.MOTOR_STEER_STRAIGHT = 1;
+			    //This block steer the CAR according to GPS coordinates
+		    }
+		    setbitifObstacleFar = 1;
+		}
+	return (void *)(&obst_avoided_msg);
+}

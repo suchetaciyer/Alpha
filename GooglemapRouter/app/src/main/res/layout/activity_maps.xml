@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayoutFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <!--<TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dip"
+            android:layout_alignParentLeft="true"
+            android:text="Destination Location : "
+            android:textColor="#FFFFFF"
+            android:background="#00394C"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dip"
+            android:layout_toRightOf="@+id/textView1"
+            android:ems="10"
+            android:textSize="15sp"
+            android:inputType="text"
+            android:textColor="#FFFFFF"
+            android:background="#8cb5ea"
+            android:labelFor="@+id/editText1"
+            android:padding="2dip">
+            <requestFocus/>
+        </EditText> -->
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/connectAlpha"
+                android:layout_width="0dip"
+                android:layout_height="50dip"
+                android:layout_weight="0.5"
+                android:background="#1313b6"
+                android:onClick="connect_alpha"
+                android:clickable="true"
+                android:text=" Connect Alpha "
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="0dip"
+            android:layout_weight="0.5"
+            android:layout_height="50dip"
+            android:layout_toRightOf="@+id/connectAlpha"
+            android:background="#1313b6"
+            android:onClick="goStop"
+            android:text=" Go "
+            android:clickable="true"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>
+
+
+

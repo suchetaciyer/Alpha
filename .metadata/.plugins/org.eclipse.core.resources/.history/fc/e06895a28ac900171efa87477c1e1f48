@@ -1,0 +1,668 @@
+/*
+ * test_obstacle_avoidance.cpp
+ *
+ *  Created on: Nov 14, 2017
+ *      Author: Jigar
+ */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <cgreen/cgreen.h>
+#include <cgreen/mocks.h>
+
+// Include for C++
+using namespace cgreen;
+#include "obstacle_avoidance.h"
+#include "generated_can.h"
+
+
+Ensure(test_get_left_state)
+{
+	//Assertions of all equal values
+    assert_that(get_left_state(-1), is_equal_to(28));
+    assert_that(get_left_state(0), is_equal_to(25));
+    assert_that(get_left_state(1), is_equal_to(25));
+    assert_that(get_left_state(10), is_equal_to(25));
+    assert_that(get_left_state(19), is_equal_to(25));
+    assert_that(get_left_state(20), is_equal_to(25));
+    assert_that(get_left_state(21), is_equal_to(26));
+    assert_that(get_left_state(22), is_equal_to(26));
+    assert_that(get_left_state(30), is_equal_to(26));
+    assert_that(get_left_state(44), is_equal_to(26));
+    assert_that(get_left_state(45), is_equal_to(26));
+    assert_that(get_left_state(46), is_equal_to(27));
+    assert_that(get_left_state(50), is_equal_to(27));
+    assert_that(get_left_state(68), is_equal_to(27));
+    assert_that(get_left_state(109), is_equal_to(27));
+    assert_that(get_left_state(110), is_equal_to(27));
+    assert_that(get_left_state(111), is_equal_to(28));
+    assert_that(get_left_state(200), is_equal_to(28));
+    assert_that(get_left_state(23423), is_equal_to(28));
+    //Assertions of all not equal values
+    assert_that(get_left_state(0), is_not_equal_to(26));
+    assert_that(get_left_state(0), is_not_equal_to(27));
+    assert_that(get_left_state(0), is_not_equal_to(28));
+
+    assert_that(get_left_state(1), is_not_equal_to(26));
+    assert_that(get_left_state(1), is_not_equal_to(27));
+    assert_that(get_left_state(1), is_not_equal_to(28));
+
+    assert_that(get_left_state(10), is_not_equal_to(26));
+    assert_that(get_left_state(10), is_not_equal_to(27));
+    assert_that(get_left_state(10), is_not_equal_to(28));
+
+    assert_that(get_left_state(19), is_not_equal_to(26));
+    assert_that(get_left_state(19), is_not_equal_to(27));
+    assert_that(get_left_state(19), is_not_equal_to(28));
+
+    assert_that(get_left_state(20), is_not_equal_to(26));
+    assert_that(get_left_state(20), is_not_equal_to(27));
+    assert_that(get_left_state(20), is_not_equal_to(28));
+
+    assert_that(get_left_state(21), is_not_equal_to(25));
+    assert_that(get_left_state(21), is_not_equal_to(27));
+    assert_that(get_left_state(21), is_not_equal_to(28));
+
+    assert_that(get_left_state(22), is_not_equal_to(25));
+    assert_that(get_left_state(22), is_not_equal_to(27));
+    assert_that(get_left_state(22), is_not_equal_to(28));
+
+    assert_that(get_left_state(30), is_not_equal_to(25));
+    assert_that(get_left_state(30), is_not_equal_to(27));
+    assert_that(get_left_state(30), is_not_equal_to(28));
+
+    assert_that(get_left_state(44), is_not_equal_to(25));
+    assert_that(get_left_state(44), is_not_equal_to(27));
+    assert_that(get_left_state(44), is_not_equal_to(28));
+
+    assert_that(get_left_state(45), is_not_equal_to(25));
+    assert_that(get_left_state(45), is_not_equal_to(27));
+    assert_that(get_left_state(45), is_not_equal_to(28));
+
+    assert_that(get_left_state(46), is_not_equal_to(25));
+    assert_that(get_left_state(46), is_not_equal_to(26));
+    assert_that(get_left_state(46), is_not_equal_to(28));
+
+    assert_that(get_left_state(50), is_not_equal_to(25));
+    assert_that(get_left_state(50), is_not_equal_to(26));
+    assert_that(get_left_state(50), is_not_equal_to(28));
+
+    assert_that(get_left_state(68), is_not_equal_to(25));
+    assert_that(get_left_state(68), is_not_equal_to(26));
+    assert_that(get_left_state(68), is_not_equal_to(28));
+
+    assert_that(get_left_state(109), is_not_equal_to(25));
+    assert_that(get_left_state(109), is_not_equal_to(26));
+    assert_that(get_left_state(109), is_not_equal_to(28));
+
+    assert_that(get_left_state(110), is_not_equal_to(25));
+    assert_that(get_left_state(110), is_not_equal_to(26));
+    assert_that(get_left_state(110), is_not_equal_to(28));
+
+    assert_that(get_left_state(111), is_not_equal_to(25));
+    assert_that(get_left_state(111), is_not_equal_to(26));
+    assert_that(get_left_state(111), is_not_equal_to(27));
+
+    assert_that(get_left_state(200), is_not_equal_to(25));
+    assert_that(get_left_state(200), is_not_equal_to(26));
+    assert_that(get_left_state(200), is_not_equal_to(27));
+
+    assert_that(get_left_state(23423), is_not_equal_to(25));
+    assert_that(get_left_state(23423), is_not_equal_to(26));
+    assert_that(get_left_state(23423), is_not_equal_to(27));
+
+}
+Ensure(test_get_right_state)
+{
+	//Assertions of all equal values
+    assert_that(get_right_state(-1), is_equal_to(28));
+    assert_that(get_right_state(0), is_equal_to(25));
+    assert_that(get_right_state(1), is_equal_to(25));
+    assert_that(get_right_state(10), is_equal_to(25));
+    assert_that(get_right_state(19), is_equal_to(25));
+    assert_that(get_right_state(20), is_equal_to(25));
+    assert_that(get_right_state(21), is_equal_to(26));
+    assert_that(get_right_state(22), is_equal_to(26));
+    assert_that(get_right_state(30), is_equal_to(26));
+    assert_that(get_right_state(44), is_equal_to(26));
+    assert_that(get_right_state(45), is_equal_to(26));
+    assert_that(get_right_state(46), is_equal_to(27));
+    assert_that(get_right_state(50), is_equal_to(27));
+    assert_that(get_right_state(68), is_equal_to(27));
+    assert_that(get_right_state(109), is_equal_to(27));
+    assert_that(get_right_state(110), is_equal_to(27));
+    assert_that(get_right_state(111), is_equal_to(28));
+    assert_that(get_right_state(200), is_equal_to(28));
+    assert_that(get_right_state(23423), is_equal_to(28));
+    //Assertions of all not equal values
+    assert_that(get_right_state(0), is_not_equal_to(26));
+    assert_that(get_right_state(0), is_not_equal_to(27));
+    assert_that(get_right_state(0), is_not_equal_to(28));
+
+    assert_that(get_right_state(1), is_not_equal_to(26));
+    assert_that(get_right_state(1), is_not_equal_to(27));
+    assert_that(get_right_state(1), is_not_equal_to(28));
+
+    assert_that(get_right_state(10), is_not_equal_to(26));
+    assert_that(get_right_state(10), is_not_equal_to(27));
+    assert_that(get_right_state(10), is_not_equal_to(28));
+
+    assert_that(get_right_state(19), is_not_equal_to(26));
+    assert_that(get_right_state(19), is_not_equal_to(27));
+    assert_that(get_right_state(19), is_not_equal_to(28));
+
+    assert_that(get_right_state(20), is_not_equal_to(26));
+    assert_that(get_right_state(20), is_not_equal_to(27));
+    assert_that(get_right_state(20), is_not_equal_to(28));
+
+    assert_that(get_right_state(21), is_not_equal_to(25));
+    assert_that(get_right_state(21), is_not_equal_to(27));
+    assert_that(get_right_state(21), is_not_equal_to(28));
+
+    assert_that(get_right_state(22), is_not_equal_to(25));
+    assert_that(get_right_state(22), is_not_equal_to(27));
+    assert_that(get_right_state(22), is_not_equal_to(28));
+
+    assert_that(get_right_state(30), is_not_equal_to(25));
+    assert_that(get_right_state(30), is_not_equal_to(27));
+    assert_that(get_right_state(30), is_not_equal_to(28));
+
+    assert_that(get_right_state(44), is_not_equal_to(25));
+    assert_that(get_right_state(44), is_not_equal_to(27));
+    assert_that(get_right_state(44), is_not_equal_to(28));
+
+    assert_that(get_right_state(45), is_not_equal_to(25));
+    assert_that(get_right_state(45), is_not_equal_to(27));
+    assert_that(get_right_state(45), is_not_equal_to(28));
+
+    assert_that(get_right_state(46), is_not_equal_to(25));
+    assert_that(get_right_state(46), is_not_equal_to(26));
+    assert_that(get_right_state(46), is_not_equal_to(28));
+
+    assert_that(get_right_state(50), is_not_equal_to(25));
+    assert_that(get_right_state(50), is_not_equal_to(26));
+    assert_that(get_right_state(50), is_not_equal_to(28));
+
+    assert_that(get_right_state(68), is_not_equal_to(25));
+    assert_that(get_right_state(68), is_not_equal_to(26));
+    assert_that(get_right_state(68), is_not_equal_to(28));
+
+    assert_that(get_right_state(109), is_not_equal_to(25));
+    assert_that(get_right_state(109), is_not_equal_to(26));
+    assert_that(get_right_state(109), is_not_equal_to(28));
+
+    assert_that(get_right_state(110), is_not_equal_to(25));
+    assert_that(get_right_state(110), is_not_equal_to(26));
+    assert_that(get_right_state(110), is_not_equal_to(28));
+
+    assert_that(get_right_state(111), is_not_equal_to(25));
+    assert_that(get_right_state(111), is_not_equal_to(26));
+    assert_that(get_right_state(111), is_not_equal_to(27));
+
+    assert_that(get_right_state(200), is_not_equal_to(25));
+    assert_that(get_right_state(200), is_not_equal_to(26));
+    assert_that(get_right_state(200), is_not_equal_to(27));
+
+    assert_that(get_right_state(23423), is_not_equal_to(25));
+    assert_that(get_right_state(23423), is_not_equal_to(26));
+    assert_that(get_right_state(23423), is_not_equal_to(27));
+
+}
+Ensure(test_get_center_state)
+{
+//Assertions of all equal values
+assert_that(get_center_state(-1), is_equal_to(28));
+assert_that(get_center_state(0), is_equal_to(25));
+assert_that(get_center_state(1), is_equal_to(25));
+assert_that(get_center_state(10), is_equal_to(25));
+assert_that(get_center_state(39), is_equal_to(25));
+assert_that(get_center_state(40), is_equal_to(25));
+assert_that(get_center_state(41), is_equal_to(26));
+assert_that(get_center_state(42), is_equal_to(26));
+assert_that(get_center_state(60), is_equal_to(26));
+assert_that(get_center_state(79), is_equal_to(26));
+assert_that(get_center_state(80), is_equal_to(26));
+assert_that(get_center_state(81), is_equal_to(27));
+assert_that(get_center_state(90), is_equal_to(27));
+assert_that(get_center_state(120), is_equal_to(27));
+assert_that(get_center_state(179), is_equal_to(27));
+assert_that(get_center_state(180), is_equal_to(27));
+assert_that(get_center_state(181), is_equal_to(28));
+assert_that(get_center_state(200), is_equal_to(28));
+assert_that(get_center_state(23423), is_equal_to(28));
+//Assertions of all not equal values
+assert_that(get_center_state(0), is_not_equal_to(26));
+assert_that(get_center_state(0), is_not_equal_to(27));
+assert_that(get_center_state(0), is_not_equal_to(28));
+
+assert_that(get_center_state(1), is_not_equal_to(26));
+assert_that(get_center_state(1), is_not_equal_to(27));
+assert_that(get_center_state(1), is_not_equal_to(28));
+
+assert_that(get_center_state(10), is_not_equal_to(26));
+assert_that(get_center_state(10), is_not_equal_to(27));
+assert_that(get_center_state(10), is_not_equal_to(28));
+
+assert_that(get_center_state(39), is_not_equal_to(26));
+assert_that(get_center_state(39), is_not_equal_to(27));
+assert_that(get_center_state(39), is_not_equal_to(28));
+
+assert_that(get_center_state(40), is_not_equal_to(26));
+assert_that(get_center_state(40), is_not_equal_to(27));
+assert_that(get_center_state(40), is_not_equal_to(28));
+
+assert_that(get_center_state(41), is_not_equal_to(25));
+assert_that(get_center_state(41), is_not_equal_to(27));
+assert_that(get_center_state(41), is_not_equal_to(28));
+
+assert_that(get_center_state(42), is_not_equal_to(25));
+assert_that(get_center_state(42), is_not_equal_to(27));
+assert_that(get_center_state(42), is_not_equal_to(28));
+
+assert_that(get_center_state(60), is_not_equal_to(25));
+assert_that(get_center_state(60), is_not_equal_to(27));
+assert_that(get_center_state(60), is_not_equal_to(28));
+
+assert_that(get_center_state(79), is_not_equal_to(25));
+assert_that(get_center_state(79), is_not_equal_to(27));
+assert_that(get_center_state(79), is_not_equal_to(28));
+
+assert_that(get_center_state(80), is_not_equal_to(25));
+assert_that(get_center_state(80), is_not_equal_to(27));
+assert_that(get_center_state(80), is_not_equal_to(28));
+
+assert_that(get_center_state(81), is_not_equal_to(25));
+assert_that(get_center_state(81), is_not_equal_to(26));
+assert_that(get_center_state(81), is_not_equal_to(28));
+
+assert_that(get_center_state(90), is_not_equal_to(25));
+assert_that(get_center_state(90), is_not_equal_to(26));
+assert_that(get_center_state(90), is_not_equal_to(28));
+
+assert_that(get_center_state(120), is_not_equal_to(25));
+assert_that(get_center_state(120), is_not_equal_to(26));
+assert_that(get_center_state(120), is_not_equal_to(28));
+
+assert_that(get_center_state(179), is_not_equal_to(25));
+assert_that(get_center_state(179), is_not_equal_to(26));
+assert_that(get_center_state(179), is_not_equal_to(28));
+
+assert_that(get_center_state(180), is_not_equal_to(25));
+assert_that(get_center_state(180), is_not_equal_to(26));
+assert_that(get_center_state(180), is_not_equal_to(28));
+
+assert_that(get_center_state(181), is_not_equal_to(25));
+assert_that(get_center_state(181), is_not_equal_to(26));
+assert_that(get_center_state(181), is_not_equal_to(27));
+
+assert_that(get_center_state(200), is_not_equal_to(25));
+assert_that(get_center_state(200), is_not_equal_to(26));
+assert_that(get_center_state(200), is_not_equal_to(27));
+
+assert_that(get_center_state(23423), is_not_equal_to(25));
+assert_that(get_center_state(23423), is_not_equal_to(26));
+assert_that(get_center_state(23423), is_not_equal_to(27));
+
+}
+
+Ensure(test_get_rear_state)
+{
+//Assertions of all equal values
+assert_that(get_rear_state(-1), is_equal_to(28));
+assert_that(get_rear_state(0), is_equal_to(25));
+assert_that(get_rear_state(1), is_equal_to(25));
+assert_that(get_rear_state(10), is_equal_to(25));
+assert_that(get_rear_state(39), is_equal_to(25));
+assert_that(get_rear_state(40), is_equal_to(25));
+assert_that(get_rear_state(41), is_equal_to(26));
+assert_that(get_rear_state(42), is_equal_to(26));
+assert_that(get_rear_state(60), is_equal_to(26));
+assert_that(get_rear_state(79), is_equal_to(26));
+assert_that(get_rear_state(80), is_equal_to(26));
+assert_that(get_rear_state(81), is_equal_to(27));
+assert_that(get_rear_state(90), is_equal_to(27));
+assert_that(get_rear_state(120), is_equal_to(27));
+assert_that(get_rear_state(179), is_equal_to(27));
+assert_that(get_rear_state(180), is_equal_to(27));
+assert_that(get_rear_state(181), is_equal_to(28));
+assert_that(get_rear_state(200), is_equal_to(28));
+assert_that(get_rear_state(23423), is_equal_to(28));
+//Assertions of all not equal values
+assert_that(get_rear_state(0), is_not_equal_to(26));
+assert_that(get_rear_state(0), is_not_equal_to(27));
+assert_that(get_rear_state(0), is_not_equal_to(28));
+
+assert_that(get_rear_state(1), is_not_equal_to(26));
+assert_that(get_rear_state(1), is_not_equal_to(27));
+assert_that(get_rear_state(1), is_not_equal_to(28));
+
+assert_that(get_rear_state(10), is_not_equal_to(26));
+assert_that(get_rear_state(10), is_not_equal_to(27));
+assert_that(get_rear_state(10), is_not_equal_to(28));
+
+assert_that(get_rear_state(39), is_not_equal_to(26));
+assert_that(get_rear_state(39), is_not_equal_to(27));
+assert_that(get_rear_state(39), is_not_equal_to(28));
+
+assert_that(get_rear_state(40), is_not_equal_to(26));
+assert_that(get_rear_state(40), is_not_equal_to(27));
+assert_that(get_rear_state(40), is_not_equal_to(28));
+
+assert_that(get_rear_state(41), is_not_equal_to(25));
+assert_that(get_rear_state(41), is_not_equal_to(27));
+assert_that(get_rear_state(41), is_not_equal_to(28));
+
+assert_that(get_rear_state(42), is_not_equal_to(25));
+assert_that(get_rear_state(42), is_not_equal_to(27));
+assert_that(get_rear_state(42), is_not_equal_to(28));
+
+assert_that(get_rear_state(60), is_not_equal_to(25));
+assert_that(get_rear_state(60), is_not_equal_to(27));
+assert_that(get_rear_state(60), is_not_equal_to(28));
+
+assert_that(get_rear_state(79), is_not_equal_to(25));
+assert_that(get_rear_state(79), is_not_equal_to(27));
+assert_that(get_rear_state(79), is_not_equal_to(28));
+
+assert_that(get_rear_state(80), is_not_equal_to(25));
+assert_that(get_rear_state(80), is_not_equal_to(27));
+assert_that(get_rear_state(80), is_not_equal_to(28));
+
+assert_that(get_rear_state(81), is_not_equal_to(25));
+assert_that(get_rear_state(81), is_not_equal_to(26));
+assert_that(get_rear_state(81), is_not_equal_to(28));
+
+assert_that(get_rear_state(90), is_not_equal_to(25));
+assert_that(get_rear_state(90), is_not_equal_to(26));
+assert_that(get_rear_state(90), is_not_equal_to(28));
+
+assert_that(get_rear_state(120), is_not_equal_to(25));
+assert_that(get_rear_state(120), is_not_equal_to(26));
+assert_that(get_rear_state(120), is_not_equal_to(28));
+
+assert_that(get_rear_state(179), is_not_equal_to(25));
+assert_that(get_rear_state(179), is_not_equal_to(26));
+assert_that(get_rear_state(179), is_not_equal_to(28));
+
+assert_that(get_rear_state(180), is_not_equal_to(25));
+assert_that(get_rear_state(180), is_not_equal_to(26));
+assert_that(get_rear_state(180), is_not_equal_to(28));
+
+assert_that(get_rear_state(181), is_not_equal_to(25));
+assert_that(get_rear_state(181), is_not_equal_to(26));
+assert_that(get_rear_state(181), is_not_equal_to(27));
+
+assert_that(get_rear_state(200), is_not_equal_to(25));
+assert_that(get_rear_state(200), is_not_equal_to(26));
+assert_that(get_rear_state(200), is_not_equal_to(27));
+
+assert_that(get_rear_state(23423), is_not_equal_to(25));
+assert_that(get_rear_state(23423), is_not_equal_to(26));
+assert_that(get_rear_state(23423), is_not_equal_to(27));
+
+}
+
+MOTOR_SIGNAL_t* mtr_sg_mock;
+Ensure(test_algorithm)
+{
+	//If centre == too_near
+
+	mtr_sg_mock = (MOTOR_SIGNAL_t*)obstacle_avoidance(25,25,25,25);
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_FORWARD), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_NEUTRAL), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_REVERSE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_SPEED), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_ANGLE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_STRAIGHT), is_equal_to(1));
+
+    mtr_sg_mock = {0};
+
+    mtr_sg_mock = (MOTOR_SIGNAL_t*)obstacle_avoidance(25,25,25,26);
+    assert_that((mtr_sg_mock->MOTOR_DRIVE_FORWARD), is_equal_to(0));
+    assert_that((mtr_sg_mock->MOTOR_DRIVE_NEUTRAL), is_equal_to(0));
+    assert_that((mtr_sg_mock->MOTOR_DRIVE_REVERSE), is_equal_to(0));
+    assert_that((mtr_sg_mock->MOTOR_DRIVE_SPEED), is_equal_to(0));
+    assert_that((mtr_sg_mock->MOTOR_STEER_ANGLE), is_equal_to(0));
+    assert_that((mtr_sg_mock->MOTOR_STEER_FULL_LEFT), is_equal_to(0));
+    assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_LEFT), is_equal_to(0));
+    assert_that((mtr_sg_mock->MOTOR_STEER_FULL_RIGHT), is_equal_to(0));
+    assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_RIGHT), is_equal_to(0));
+    assert_that((mtr_sg_mock->MOTOR_STEER_STRAIGHT), is_equal_to(1));
+
+    mtr_sg_mock = {0};
+
+	mtr_sg_mock = (MOTOR_SIGNAL_t*)obstacle_avoidance(25,25,25,27);
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_FORWARD), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_NEUTRAL), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_REVERSE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_SPEED), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_ANGLE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_STRAIGHT), is_equal_to(1));
+
+	mtr_sg_mock = {0};
+
+	mtr_sg_mock = (MOTOR_SIGNAL_t*)obstacle_avoidance(25,25,25,28);
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_FORWARD), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_NEUTRAL), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_REVERSE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_SPEED), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_ANGLE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_STRAIGHT), is_equal_to(1));
+
+    mtr_sg_mock = {0};
+
+	mtr_sg_mock = (MOTOR_SIGNAL_t*)obstacle_avoidance(26,25,27,28);
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_FORWARD), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_NEUTRAL), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_REVERSE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_SPEED), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_ANGLE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_STRAIGHT), is_equal_to(1));
+
+    mtr_sg_mock = {0};
+
+	mtr_sg_mock = (MOTOR_SIGNAL_t*)obstacle_avoidance(27,25,26,28);
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_FORWARD), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_NEUTRAL), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_REVERSE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_SPEED), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_ANGLE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_STRAIGHT), is_equal_to(1));
+
+    mtr_sg_mock = {0};
+
+    //If centre == near
+	mtr_sg_mock = (MOTOR_SIGNAL_t*)obstacle_avoidance(26,26,27,28);
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_FORWARD), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_NEUTRAL), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_REVERSE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_SPEED), is_equal_to(5));
+	assert_that((mtr_sg_mock->MOTOR_STEER_ANGLE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_RIGHT), is_equal_to(1));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_STRAIGHT), is_equal_to(0));
+
+    mtr_sg_mock = {0};
+
+	mtr_sg_mock = (MOTOR_SIGNAL_t*)obstacle_avoidance(27,26,27,28);
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_FORWARD), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_NEUTRAL), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_REVERSE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_SPEED), is_equal_to(5));
+	assert_that((mtr_sg_mock->MOTOR_STEER_ANGLE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_STRAIGHT), is_equal_to(1));
+
+    mtr_sg_mock = {0};
+
+
+	mtr_sg_mock = (MOTOR_SIGNAL_t*)obstacle_avoidance(27,26,28,28);
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_FORWARD), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_NEUTRAL), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_REVERSE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_SPEED), is_equal_to(5));
+	assert_that((mtr_sg_mock->MOTOR_STEER_ANGLE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_STRAIGHT), is_equal_to(1));
+
+    mtr_sg_mock = {0};
+
+	mtr_sg_mock = (MOTOR_SIGNAL_t*)obstacle_avoidance(28,26,28,28);
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_FORWARD), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_NEUTRAL), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_REVERSE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_SPEED), is_equal_to(5));
+	assert_that((mtr_sg_mock->MOTOR_STEER_ANGLE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_STRAIGHT), is_equal_to(1));
+
+    mtr_sg_mock = {0};
+
+
+	mtr_sg_mock = (MOTOR_SIGNAL_t*)obstacle_avoidance(25,26,28,28);
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_FORWARD), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_NEUTRAL), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_REVERSE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_SPEED), is_equal_to(5));
+	assert_that((mtr_sg_mock->MOTOR_STEER_ANGLE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_RIGHT), is_equal_to(1));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_STRAIGHT), is_equal_to(0));
+
+    mtr_sg_mock = {0};
+
+
+	mtr_sg_mock = (MOTOR_SIGNAL_t*)obstacle_avoidance(28,26,25,28);
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_FORWARD), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_NEUTRAL), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_REVERSE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_SPEED), is_equal_to(5));
+	assert_that((mtr_sg_mock->MOTOR_STEER_ANGLE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_LEFT), is_equal_to(1));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_STRAIGHT), is_equal_to(0));
+
+    mtr_sg_mock = {0};
+
+
+	mtr_sg_mock = (MOTOR_SIGNAL_t*)obstacle_avoidance(25,26,26,28);
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_FORWARD), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_NEUTRAL), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_REVERSE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_SPEED), is_equal_to(5));
+	assert_that((mtr_sg_mock->MOTOR_STEER_ANGLE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_RIGHT), is_equal_to(1));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_STRAIGHT), is_equal_to(0));
+
+    mtr_sg_mock = {0};
+
+
+	mtr_sg_mock = (MOTOR_SIGNAL_t*)obstacle_avoidance(26,26,25,28);
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_FORWARD), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_NEUTRAL), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_REVERSE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_SPEED), is_equal_to(5));
+	assert_that((mtr_sg_mock->MOTOR_STEER_ANGLE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_RIGHT), is_equal_to(1));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_STRAIGHT), is_equal_to(0));
+
+    mtr_sg_mock = {0};
+
+    //If centre == far
+
+	mtr_sg_mock = (MOTOR_SIGNAL_t*)obstacle_avoidance(25,27,25,28);
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_FORWARD), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_NEUTRAL), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_REVERSE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_SPEED), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_ANGLE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_STRAIGHT), is_equal_to(1));
+
+    mtr_sg_mock = {0};
+
+	mtr_sg_mock = (MOTOR_SIGNAL_t*)obstacle_avoidance(26,27,25,28);
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_FORWARD), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_NEUTRAL), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_REVERSE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_SPEED), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_ANGLE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_STRAIGHT), is_equal_to(1));
+
+    mtr_sg_mock = {0};
+
+	mtr_sg_mock = (MOTOR_SIGNAL_t*)obstacle_avoidance(25,27,26,28);
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_FORWARD), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_NEUTRAL), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_REVERSE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_DRIVE_SPEED), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_ANGLE), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_LEFT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_FULL_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_SLIGHT_RIGHT), is_equal_to(0));
+	assert_that((mtr_sg_mock->MOTOR_STEER_STRAIGHT), is_equal_to(1));
+
+    mtr_sg_mock = {0};
+
+}
+TestSuite* test_obstacle_avoidance()
+{
+    TestSuite* suite = create_test_suite();
+    add_test(suite, test_get_left_state);
+    add_test(suite, test_get_right_state);
+    add_test(suite, test_get_center_state);
+    add_test(suite, test_get_rear_state);
+    add_test(suite, test_algorithm);
+
+    return suite;
+}

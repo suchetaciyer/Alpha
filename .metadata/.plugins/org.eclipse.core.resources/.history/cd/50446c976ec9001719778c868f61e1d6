@@ -1,0 +1,32 @@
+#ifndef L5_APPLICATION_OBSTACLE_AVOIDANCE_H_
+#define L5_APPLICATION_OBSTACLE_AVOIDANCE_H_
+
+#include <stdint.h>
+#include <stdbool.h>
+
+typedef uint8_t range_type;
+
+typedef enum
+{
+	too_near       = 25,
+	near			,
+	far,
+	too_far,
+	no_of_ranges
+}distance;
+
+typedef struct
+{
+	range_type left_range;
+	range_type right_range;
+	range_type center_range;
+	range_type rear_range;
+}dir_range;
+
+uint8_t get_left_state(uint16_t left_rdg);
+uint8_t get_right_state(uint16_t right_rdg);
+uint8_t get_center_state(uint16_t center_rdg);
+uint8_t get_rear_state(uint16_t rear_rdg);
+
+void* obstacle_avoidance(range_type left, range_type center, range_type right, range_type rear);
+#endif /* L5_APPLICATION_OBSTACLE_AVOIDANCE_H_ */
