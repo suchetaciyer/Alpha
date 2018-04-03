@@ -1,0 +1,5 @@
+# Alpha
+
+A self-driving RC car The aim of this project is the development of an autonomous RC car which will navigate from its current location to destination location, avoiding all the obstacles on its way. The car will be integrated with the GPS, Compass, Bluetooth, multiple sensors such as ultrasonic sensors and RPM sensors to fulfill the purpose of navigation, obstacle detection, and avoidance. A Google-map based android application is developed which finds out the shortest path between current location and destination inside SJSU campus and connects to the self-driving RC car via Bluetooth. The car can move along the route provided by the application to reach the destination. Communication between all the modules on the car is done through CAN. Cgreen Unit testing (For C++) and JUnit Test (For Android) is used to improve performance and save time. On-board LEDs, headlights and taillights on the car are used for debugging issues and to get all relevant information about the status of the car, in real time. An LCD is used to give a more detailed information related to the car.
+
+Wiki link to the project : http://socialledge.com/sjsu/index.php/F17:_Alpha
